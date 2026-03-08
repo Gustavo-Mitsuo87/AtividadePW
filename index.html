@@ -1,144 +1,61 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 
 <head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Preencher Array (Simples)</title>
-	<style>
-		.texto {
-			font-size: 16px;
-			font-weight: normal;
-			margin: 10px 0;
-			color: #333;
-		}
-	</style>
+	<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-	<h1>Cadastro de Produtos (Arry de Objetos)</h1>
+	<div class="container">
+		<div class="card">
 
-	<p>Produto: <input id='in1' , placeholder="Ex: Mouse"></input>
-		Preço (R$): <input id='in2' , placeholder="Ex: 99.00"></input>
-		Quantidade: <input id='in3' , placeholder="Ex: 2"></input>
+			<h2>Cadastro de Produtos</h2>
+			<label>
+				<input class="input" id='in1' placeholder="Produto">
+			</label>
+			<label>
+				<input class="input" id='in2' type="number" step="0.01" placeholder="Preço (R$)">
+			</label>
+			<label>
+				<input class="input" id='in3' type="number" step="1" placeholder="Quantidade">
+			</label>
 
-		<button onclick='Adicionar()'>Adicionar produto</button>
-		<button onclick='Tabela()'>Listar produtos</button>
-		<button onclick='Resumo()'>Resumo</button>
-		<button onclick='Limpar()'>Limpar tudo</button>
-	</p>
+			<button onclick='Adicionar()'>Adicionar produto</button>
+			<button onclick='Tabela()'>Listar produtos</button>
+			<button onclick='Resumo()'>Resumo</button>
+			<button onclick='Limpar()'>Limpar tudo</button>
 
-	<hr>
+			<label>
+				<input class="input" id='indice' type="number" step="0" placeholder="Remover por índice">
+			</label>
+			<button onclick='RemoveIn()'>Remover</button>
+		</div>
 
-	<h2>Remover por índice</h2>
-	<input id='indice' , placeholder="Ex: 0"><button onclick='RemoveIn()'>Remover</button></input>
-	<h2 id='titulo'></h2>
+		<div class="card1">
+			
+			<div id="titulo"></div>
 
-	<p id='p1'></p>
-	<p id='p2'></p>
-	<p id='p3'></p>
-
-	<div id="containerTabela" style="display: none;">
-		<table border='1'>
-			<thead>
-				<tr>
-					<th>Índice</th>
-					<th>Produto</th>
-					<th>Preço</th>
-					<th>Qtd</th>
-					<th>Subtotal</th>
-				</tr>
-			</thead>
-			<tbody id="corpoTabela"></tbody>
-		</table>
+			<div id="containerTabela" style="display: none;">
+				<table border='0'>
+					<thead>
+						<tr>
+							<th>Índice</th>
+							<th>Produto</th>
+							<th>Preço</th>
+							<th>Quantidade</th>
+							<th>Subtotal</th>
+						</tr>
+					</thead>
+					<tbody id="corpoTabela"></tbody>
+				</table>
+			</div>
+		</div>
 	</div>
 
-	<script>
-		let lista = [];
-		const paragrafo = document.getElementById('titulo');
-		const tabela = document.getElementById('corpo-tabela');
-		const container = document.getElementById('containerTabela');
-		const p1 = document.getElementById('p1');
-		const p2 = document.getElementById('p2');
-		const p3 = document.getElementById('p3');
-
-		function Adicionar() {
-			const prod = document.getElementById('in1').value;
-			const preco = document.getElementById('in2').value;
-			const qtd = document.getElementById('in3').value;
-			const novoItem = { produto: prod, price: preco, quantidade: qtd };
-			lista.push(novoItem);
-
-			p1.innerHTML = ""; // isso remove eles quando é chamada a função
-			p2.innerHTML = "";
-			p3.innerHTML = "";
-
-			paragrafo.classList.remove('texto');
-			container.style.display = 'none';
-			paragrafo.textContent = "Produto adicionado. Total cadastrados: " + lista.length;
-		};
-
-		function Tabela() {
-			const tabela = document.getElementById("corpoTabela");
-			paragrafo.textContent = "Produtos cadastrados";
-			container.style.display = 'block';
-			tabela.innerHTML = "";
-
-			p1.innerHTML = "";  // isso remove eles quando é chamada a função
-			p2.innerHTML = "";
-			p3.innerHTML = "";
-
-			lista.forEach((item, index) => {
-				tabela.innerHTML += `
-            <tr>
-                <td>${index}</td> 
-                <td>${item.produto}</td>
-				<td>${item.price}</td>
-				<td>${item.quantidade}</td>
-				<td>${item.price * item.quantidade}</td>
-            </tr>`;
-			});
-		
-		}
-
-		function Resumo() {
-			container.style.display = 'none';
-
-			const totalItens = lista.reduce((acumulador, produto) => { // esse acumulador começa em 0, tá no final da função
-				return acumulador + Number(produto.quantidade); // esse number é pra converter o valor em numero 
-			}, 0);
-
-			// 2. Valor Total do Estoque (Soma de: preco * qtd)
-			const valorEstoque = lista.reduce((acumulador, produto) => { // a mesma coisa do outro esse acumulador
-				return acumulador + (Number(produto.price) * Number(produto.quantidade));
-			}, 0);
-
-			p1.innerHTML = "Total de produtos (linhas): " + lista.length;
-			p2.innerHTML = "Total de itens (somando quantidades): " + totalItens;
-			p3.innerHTML = "Valor total do estoque: " + valorEstoque.toFixed(2); // esse toFixed é para formatar com casas decimais
-		};
-
-		function RemoveIn() {
-			const ind = document.getElementById('indice').value;
-			container.style.display = 'none';
-
-			lista.splice(ind, 1);
-			paragrafo.textContent = "";
-			paragrafo.classList.remove('texto');
-
-			p1.innerHTML = "";  // isso remove eles quando é chamada a função
-			p2.innerHTML = "";
-			p3.innerHTML = "";
-		};
-
-		function Limpar() {
-			lista = [];
-			p1.innerHTML = "";  // isso remove eles quando é chamada a função
-			p2.innerHTML = "";
-			p3.innerHTML = "";
-			container.style.display = 'none';
-			paragrafo.classList.add('texto');
-			paragrafo.textContent = "Todos os produtos foram removidos";
-		};
-	</script>
+	<script src="script.js"></script>
 </body>
 
 </html>
