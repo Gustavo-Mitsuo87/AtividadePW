@@ -73,7 +73,7 @@
 			const ind = document.getElementById('indice').value;
 			container.style.display = 'none';
 			if (!ind || ind > lista.length) {
-				alert("Seu troxa!");
+				alert("Coloque o indice!");
 			} else {
 				lista.splice(ind, 1);
 				paragrafo.innerHTML = "<h2>Foi removido com sucesso</h2>";
